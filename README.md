@@ -1,4 +1,4 @@
-# Beespoke.ai Flutter App
+# Beespoke.ai
 
 Welcome to Beespoke.ai, a Flutter app that utilizes the Fake Store API to display a wide range of products. This app is designed to provide a seamless shopping experience with features such as product search, category filtering, a user-friendly navigation drawer, and stunning login, signup, and password reset screens.
 
