@@ -18,7 +18,7 @@ Before running the Beespoke.ai app, make sure you have the Flutter development e
 1. Clone this repository to your local machine:
 
    ```bash
-   git clone https://github.com/your-username/beespoke-ai.git
+   git clone https://github.com/yuvisingh01/beespokeai.git
    ```
 
 2. Navigate to the project directory:
