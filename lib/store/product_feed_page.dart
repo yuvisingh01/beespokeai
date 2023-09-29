@@ -2,9 +2,8 @@ import 'package:beespokeai/drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:beespokeai/store/cart_page.dart';
 import 'package:beespokeai/store/product.dart';
-
-
 
 //cart items properties
 class CartItem {
@@ -14,11 +13,10 @@ class CartItem {
   CartItem({required this.product, this.quantity = 1});
 }
 
-// cart 
+// cart
 class Cart {
   final List<CartItem> items = [];
 }
-
 class ProductFeedPage extends StatefulWidget {
   const ProductFeedPage({super.key});
 
@@ -27,11 +25,12 @@ class ProductFeedPage extends StatefulWidget {
 }
 
 class _ProductFeedPageState extends State<ProductFeedPage> {
-  List<Product> allProducts = [];  //to store all the products fetched through api
-  List<Product> displayedProducts = [];  // will store the searched products only 
-  List<String> searchHistory = [];  // will store the search history of the user
-  String? selectedCategory;     // will save the selection of the category
-  final Cart _cart = Cart();    // to add items to the cart
+  
+  List<Product> allProducts =[]; //to store all the products fetched through api
+  List<Product> displayedProducts = []; // will store the searched products only
+  List<String> searchHistory = []; // will store the search history of the user
+  String? selectedCategory; // will save the selection of the category
+  final Cart _cart = Cart(); // to add items to the cart
 
   @override
   void initState() {
@@ -76,8 +75,7 @@ class _ProductFeedPageState extends State<ProductFeedPage> {
     }
   }
 
-
-// search products 
+// search products
   void _searchProducts(String query) {
     if (query.isNotEmpty) {
       setState(() {
@@ -88,7 +86,7 @@ class _ProductFeedPageState extends State<ProductFeedPage> {
             .toList();
       });
 
-      // in the search history as we type along it will filter the history 
+      // in the search history as we type along it will filter the history
       final filteredHistory = searchHistory
           .where(
               (history) => history.toLowerCase().contains(query.toLowerCase()))
@@ -111,7 +109,6 @@ class _ProductFeedPageState extends State<ProductFeedPage> {
     }
   }
 
-
 // truncating the description to make it look evenly with other product cards
   String truncateDescription(String description, int maxLength) {
     if (description.length <= maxLength) {
@@ -128,20 +125,36 @@ class _ProductFeedPageState extends State<ProductFeedPage> {
 
     if (existingItemIndex != -1) {
       // Product already in cart, increase quantity
-      _cart.items[existingItemIndex].quantity++;
+      setState(() {
+        _cart.items[existingItemIndex].quantity++;
+        
+      });
     } else {
       // Product not in cart, add as a new item
-      _cart.items.add(CartItem(product: product));
+      setState(() {
+        _cart.items.add(CartItem(product: product));
+      });
     }
-
-// printing message in the bottom once user added a product to the cart
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('Added to cart: ${product.title}'),
-        duration: Duration(seconds: 2),
+        content: Text('Added to cart: \$${product.price.toStringAsFixed(2)}'),
+        duration: const Duration(seconds: 2),
       ),
     );
+    // Navigate to the CartPage
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) => CartPage(cartItems: _cart.items),
+    ),
+  );
   }
+
+  bool _isInCart(Product product) {
+  return _cart.items.any((item) => item.product.id == product.id);
+}
+
+// printing message in the bottom once user added a product to the cart
 
   @override
   Widget build(BuildContext context) {
@@ -149,14 +162,11 @@ class _ProductFeedPageState extends State<ProductFeedPage> {
       appBar: AppBar(
         title: Row(
           children: [
-            Image.asset('assets/logo.png',
-                width: 240,
-                height: 55), 
-            const SizedBox(
-                width: 8), 
+            Image.asset('assets/logo.png', width: 240, height: 55),
+            const SizedBox(width: 8),
           ],
         ),
-        backgroundColor: const Color.fromARGB(255, 186, 143, 239),
+        backgroundColor: Color.fromARGB(255, 144, 94, 205),
       ),
       body: Container(
         child: Column(
@@ -189,7 +199,7 @@ class _ProductFeedPageState extends State<ProductFeedPage> {
                   },
                 ),
               ),
-              // filter the product by category
+            // filter the product by category
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: DropdownButtonFormField<String>(
@@ -223,12 +233,11 @@ class _ProductFeedPageState extends State<ProductFeedPage> {
                 itemBuilder: (BuildContext context, int index) {
                   final product = displayedProducts[index];
                   return Card(
-                    elevation: 4, 
-                    margin: const EdgeInsets.all(
-                        8), 
+                    elevation: 6,
+                    shadowColor: Color.fromARGB(255, 69, 9, 141),
+                    margin: const EdgeInsets.all(8),
                     child: ListTile(
-                      contentPadding: const EdgeInsets.all(
-                          16),
+                      contentPadding: const EdgeInsets.all(16),
                       title: Text(
                         product.title,
                         style: const TextStyle(
@@ -237,8 +246,7 @@ class _ProductFeedPageState extends State<ProductFeedPage> {
                         ),
                       ),
                       subtitle: Text(
-                        truncateDescription(product.description,
-                            100), 
+                        truncateDescription(product.description, 100),
                         style: TextStyle(
                           color: Colors.grey[600],
                           fontSize: 14,
@@ -256,15 +264,17 @@ class _ProductFeedPageState extends State<ProductFeedPage> {
                             ),
                           ),
                           IconButton(
-                            icon: const Icon(Icons.add_shopping_cart),
+                            icon: Icon(Icons.add_shopping_cart,
+                            color: _isInCart(product) ? Color.fromARGB(255, 123, 63, 227) : null,),
+
                             onPressed: () {
-                              _addToCart(
-                                  product); 
+                              _addToCart(product);
+
                             },
                           ),
                         ],
                       ),
-                      // image will be used 
+                      // image will be used
                       leading: Container(
                         width: 120,
                         height: 120,
@@ -283,7 +293,7 @@ class _ProductFeedPageState extends State<ProductFeedPage> {
           ],
         ),
       ),
-      //drawer 
+      //drawer
       drawer: MyDrawer(
         child: ListView(),
       ),
