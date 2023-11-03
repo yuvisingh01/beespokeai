@@ -1,6 +1,6 @@
-# Beespoke.ai
+# Ecomm
 
-Welcome to Beespoke.ai, a Flutter app that utilizes the Fake Store API to display a wide range of products. This app is designed to provide a seamless shopping experience with features such as product search, category filtering, a user-friendly navigation drawer, and stunning login, signup, and password reset screens.
+Welcome to Ecomm, a Flutter app that utilizes the Fake Store API to display a wide range of products. This app is designed to provide a seamless shopping experience with features such as product search, category filtering, a user-friendly navigation drawer, and stunning login, signup, and password reset screens.
 
 ## Table of Contents
 
@@ -13,7 +13,7 @@ Welcome to Beespoke.ai, a Flutter app that utilizes the Fake Store API to displa
 
 ## Getting Started
 
-Before running the Beespoke.ai app, make sure you have the Flutter development environment set up on your machine. If you haven't already, follow the official [Flutter installation guide](https://flutter.dev/docs/get-started/install) to get started.
+Before running the Ecomm app, make sure you have the Flutter development environment set up on your machine. If you haven't already, follow the official [Flutter installation guide](https://flutter.dev/docs/get-started/install) to get started.
 
 1. Clone this repository to your local machine:
 
@@ -69,7 +69,7 @@ Before running the Beespoke.ai app, make sure you have the Flutter development e
 
 ## Dependencies
 
-Beespoke.ai relies on the following major packages:
+Ecomm relies on the following major packages:
 
 - [flutter](https://flutter.dev/)
 - [http](https://pub.dev/packages/http) for making HTTP requests to the Fake Store API.
@@ -78,4 +78,4 @@ For a complete list of dependencies, please refer to the `pubspec.yaml` file in 
 
 ---
 
-Happy shopping with Beespoke.ai! 🐝🛍️
+Happy shopping with Ecomm! 🐝🛍️
